@@ -1,0 +1,31 @@
+{
+  "name": "sherlock-deduction",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A detective deduction game adapted from the public-domain Adventures of Sherlock Holmes.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "dev": "vite",
+    "build": "vite build",
+    "build:logic": "esbuild src/logic/index.ts --bundle --format=esm --target=es2020 --outfile=dist/logic.js"
+  },
+  "dependencies": {
+    "phaser": "^3.80.1"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/cli": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
+    "@types/node": "^20.14.0",
+    "@vitest/coverage-v8": "^2.0.5",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.3.5",
+    "vitest": "^2.0.5"
+  }
+}

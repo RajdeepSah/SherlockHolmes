@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+android/
+.capacitor/
+*.tsbuildinfo
+*.log
+.env
+.DS_Store
+.idea/
+.vscode/
