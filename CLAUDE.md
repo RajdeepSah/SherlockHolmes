@@ -13,7 +13,8 @@ is the roadmap; `SKILLS.md` is the cookbook; this file is the rulebook.
 ## What this is
 
 A TypeScript detective deduction game (Sherlock, public-domain source). **Current state:
-Phase 0–1a complete, 31 tests green, typecheck clean.** See `PLAN.md §6` for phases.
+Phase 0–2 complete — playable Phaser slice in the browser, 38 tests green, typecheck
+clean.** See `PLAN.md §6` for phases.
 
 ## The golden rules (do not break these)
 

@@ -53,9 +53,13 @@ src/
   content/          # DATA, not logic.
     case-speckled-band.ts   # the vertical-slice case
     index.ts                # registry: CASES, getCase(), listCases()
-  scenes/           # (Phase 2) Phaser presentation — to be added
+  scenes/           # Phaser presentation (Phase 2). Thin: renders state, forwards Moves.
+    controller.ts   # GameController — the only bridge to the core (unit-tested in Node)
+    theme.ts, ui.ts # palette + reusable widgets (Button, list rows, ScrollArea)
+    *Scene.ts       # Briefing / Investigation / Deduction / Accusation / Resolution
+  main.ts           # Phase 2 entry: boots Phaser into #game, shares one controller
 public/
-  index.html        # game page; Phaser mounts into #game; ships beside logic.js
+  index.html        # game page; loads ../src/main.ts; Phaser mounts into #game
 ```
 
 The dependency rule is one-directional: **presentation → logic → (nothing)**. Logic
@@ -90,9 +94,10 @@ Every change to `src/logic/**` and `src/content/**` follows red → green → re
 2. **Green.** Write the least code that makes it pass.
 3. **Refactor.** Clean up with the test as a safety net.
 
-Quality gates that must stay green at all times: `npm test` (currently **31 passing**),
+Quality gates that must stay green at all times: `npm test` (currently **38 passing**),
 `npm run typecheck`, and logic coverage (see `vitest.config.ts`). The presentation layer
-is tested more lightly (it should be thin); the *rules* are tested exhaustively.
+is tested more lightly (it should be thin — the `GameController` seam has a small suite
+asserting it only forwards moves); the *rules* are tested exhaustively.
 
 ---
 
@@ -114,13 +119,16 @@ The phase numbers match the markers already written into the source comments.
 - **Exit criteria:** ≥2 valid cases registered; `listCases()` drives a case-select list;
   adding a case touches only `content/`.
 
-### Phase 2 — Playable web build (Phaser) ☐
-- Scenes mounting into `#game`: Briefing → Investigation (clickable scene + notebook) →
-  Deduction (assemble clues into statements) → Accusation → Resolution.
-- The UI calls `applyMove()` and renders `MoveResult.events`; it holds **no rules**.
-- Placeholder art is fine here — Phase 3 replaces it.
-- **Exit criteria:** the Speckled Band case is fully playable in a browser on a phone-sized
-  viewport using `npm run dev`.
+### Phase 2 — Playable web build (Phaser) ✅ DONE
+- ✅ Five scenes mounting into `#game`: Briefing → Investigation (examine + notebook) →
+  Deduction (assemble clues into statements) → Accusation → Resolution (`src/scenes/`).
+- ✅ A thin `GameController` (`src/scenes/controller.ts`) is the only bridge: it forwards
+  `Move`s to `applyMove()` and exposes state + an event log. It holds **no rules** and is
+  unit-tested in Node (7 tests) without Phaser/DOM.
+- ✅ Phaser scaled `FIT` to a 400×800 base, so the slice plays on a phone-sized viewport.
+  Placeholder styling only — Phase 3 replaces it with generated art/audio.
+- **Exit criteria (met):** `npm run dev` serves the Speckled Band case end-to-end in a
+  browser; `npm test` (38), `npm run typecheck`, and `npm run build` are all green.
 
 ### Phase 3 — Look and sound (Higgsfield) ☐
 - Generate period **portraits** for each suspect, **backgrounds** per location, a few UI
@@ -185,6 +193,6 @@ natural next increments and require no engine changes.
 - [x] Phase 0: tested logic core
 - [x] Phase 1a: case registry + validator + integrity tests
 - [x] Phase 1b: second case authored as data (zero engine changes)
-- [ ] Phase 2: Phaser playable slice in browser
+- [x] Phase 2: Phaser playable slice in browser
 - [ ] Phase 3: Higgsfield art + audio + deploy art
 - [ ] Phase 4: logic.js reconciled, deployed to Higgsfield, APK built

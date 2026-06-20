@@ -6,25 +6,28 @@
     <title>The Speckled Band — A Sherlock Deduction</title>
     <style>
       :root { color-scheme: dark; }
-      body { margin: 0; font-family: Georgia, 'Times New Roman', serif; background: #14110d; color: #e8dcc0; }
-      .wrap { max-width: 720px; margin: 0 auto; padding: 28px 22px; }
-      h1 { font-weight: 600; letter-spacing: .5px; margin-bottom: 4px; }
-      .muted { opacity: .65; font-size: 14px; margin-top: 0; }
-      .card { border: 1px solid #3a3122; border-radius: 12px; padding: 18px; background: #1c1813; margin-top: 18px; }
-      code { background: #2a2419; padding: 1px 6px; border-radius: 4px; }
-      #game { margin-top: 18px; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: Georgia, 'Times New Roman', serif;
+        background: #14110d;
+        color: #e8dcc0;
+        /* Centre the game and respect notches on phones. */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        overflow: hidden;
+      }
+      /* Phaser (Scale.FIT) resizes its canvas to fill this box while keeping aspect. */
+      #game { width: 100vw; height: 100vh; }
+      #game canvas { display: block; margin: 0 auto; }
     </style>
   </head>
   <body>
-    <div class="wrap">
-      <h1>The Speckled Band</h1>
-      <p class="muted">A Sherlock Holmes deduction game · public-domain source</p>
-      <div class="card">
-        <p><strong>Phase 0 scaffold.</strong> The logic core is built and unit-tested. The Phaser presentation layer (Phase 2) mounts into <code>#game</code> below.</p>
-        <p class="muted">Run <code>npm test</code> to exercise the deduction engine. See <code>PLAN.md</code> for the full roadmap.</p>
-      </div>
-      <div id="game"></div>
-    </div>
-    <!-- Phase 2: Phaser bundle mounts into #game. Phase 4: dist/logic.js ships beside this file for the Higgsfield deploy contract. -->
+    <!-- Phase 2: the Phaser game mounts here. Phase 4: dist/logic.js ships beside the
+         built index.html for the Higgsfield deploy contract. -->
+    <div id="game"></div>
+    <script type="module" src="../src/main.ts"></script>
   </body>
 </html>
