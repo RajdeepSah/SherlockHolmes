@@ -37,6 +37,26 @@ export interface Solution {
   keyClueIds: string[];
 }
 
+/**
+ * Optional presentation assets for a case (Phase 3, Higgsfield-generated). These are
+ * just *paths* — pure data. The logic core never loads them; the UI does, and degrades
+ * gracefully when a field is absent. Keeping them optional means content without art
+ * still validates and still plays.
+ */
+export interface CaseArt {
+  /** Per-phase backdrop image paths. Any phase may be omitted. */
+  scenery?: Partial<Record<Phase, string>>;
+  /** Ambient audio paths. */
+  ambience?: {
+    /** Looping background atmosphere. */
+    loop?: string;
+    /** One-shot tension sting (e.g. on the verdict). */
+    sting?: string;
+  };
+  /** 16:9 cover/thumbnail, reused at deploy time (Phase 4). */
+  cover?: string;
+}
+
 export interface Case {
   id: string;
   title: string;
@@ -46,6 +66,8 @@ export interface Case {
   suspects: Suspect[];
   clues: Clue[];
   solution: Solution;
+  /** Optional Phase 3 art/audio. Absence is fine — the UI falls back to a procedural look. */
+  art?: CaseArt;
 }
 
 export interface Deduction {

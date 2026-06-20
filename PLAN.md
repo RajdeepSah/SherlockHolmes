@@ -94,7 +94,7 @@ Every change to `src/logic/**` and `src/content/**` follows red → green → re
 2. **Green.** Write the least code that makes it pass.
 3. **Refactor.** Clean up with the test as a safety net.
 
-Quality gates that must stay green at all times: `npm test` (currently **38 passing**),
+Quality gates that must stay green at all times: `npm test` (currently **39 passing**),
 `npm run typecheck`, and logic coverage (see `vitest.config.ts`). The presentation layer
 is tested more lightly (it should be thin — the `GameController` seam has a small suite
 asserting it only forwards moves); the *rules* are tested exhaustively.
@@ -130,12 +130,22 @@ The phase numbers match the markers already written into the source comments.
 - **Exit criteria (met):** `npm run dev` serves the Speckled Band case end-to-end in a
   browser; `npm test` (38), `npm run typecheck`, and `npm run build` are all green.
 
-### Phase 3 — Look and sound (Higgsfield) ☐
-- Generate period **portraits** for each suspect, **backgrounds** per location, a few UI
-  framing pieces, and **ambient audio** (fireplace, night, tension sting).
-- Asset *paths* are referenced from content (`Suspect.portrait`, etc.); the logic core
-  stays asset-agnostic. Generating an asset never blocks logic work.
-- Also produce the deploy **thumbnail (16:9)** and **favicon (1:1)** required at deploy time.
+### Phase 3 — Look and sound (Higgsfield) ◐ GROUNDWORK DONE, GENERATION BLOCKED
+- ✅ **Asset model is data:** optional `Suspect.portrait` + `Case.art` (per-phase scenery,
+  ambience loop/sting, 16:9 cover) — pure paths in content, validated, no engine impact.
+- ✅ **Plumbing in place:** `BootScene` preloads whatever a case references; `applyBackdrop`,
+  the avatar helper, and `Ambience` consume them and **fall back gracefully** — the slice
+  already looks intentional via a procedural gaslit gradient + brass monograms, no art yet.
+- ✅ **House style locked** in `STYLE.md` (one style fragment + palette). `static/` is the
+  publicDir → generated files at `static/assets/...` serve at `/assets/...` in dev/build.
+- ✅ **Manual generation manifest** in `ARTWORK.md`: per-asset prompts, references for
+  character consistency, exact paths/filenames, and a "pilot first" set — for hand
+  generation in the **Gemini Nano Banana** app (audio/video deferred). The case content,
+  the scene loaders, and the favicon link are **pre-wired to those exact paths**, so a
+  generated file is a **zero-code drop-in** (save with the right name → reload).
+- ☐ **Higgsfield generation blocked — billable:** the account has **0 credits (free
+  plan)**, so the in-house Higgsfield route can't generate without a user-authorised
+  purchase. Current plan is manual Gemini generation per `ARTWORK.md` instead.
 - **Exit criteria:** the vertical slice looks intentional and cohesive, not templated.
 
 ### Phase 4 — Ship it ☐
@@ -194,5 +204,6 @@ natural next increments and require no engine changes.
 - [x] Phase 1a: case registry + validator + integrity tests
 - [x] Phase 1b: second case authored as data (zero engine changes)
 - [x] Phase 2: Phaser playable slice in browser
-- [ ] Phase 3: Higgsfield art + audio + deploy art
+- [~] Phase 3: asset pipeline + procedural fallback + locked style done; Higgsfield
+  generation blocked on credits (0 credits, free plan)
 - [ ] Phase 4: logic.js reconciled, deployed to Higgsfield, APK built

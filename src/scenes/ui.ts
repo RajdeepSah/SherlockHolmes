@@ -110,6 +110,13 @@ export class Button extends Phaser.GameObjects.Container {
   }
 }
 
+export interface AvatarOpts {
+  /** Texture key of a generated portrait; if present and loaded it is used. */
+  textureKey?: string;
+  /** Fallback monogram letter drawn when no portrait texture is available. */
+  initial?: string;
+}
+
 export interface ListItemOpts {
   width: number;
   title: string;
@@ -118,6 +125,8 @@ export interface ListItemOpts {
   selected?: boolean;
   /** 'check' = done marker, 'toggle' = radio/checkbox dot, 'none' = no marker. */
   marker?: 'check' | 'toggle' | 'none';
+  /** Optional leading avatar (portrait or monogram). Takes the left slot over `marker`. */
+  avatar?: AvatarOpts;
   disabled?: boolean;
 }
 
@@ -127,18 +136,54 @@ export interface ListItem {
 }
 
 /**
+ * A square avatar: a generated portrait if its texture is loaded, otherwise a brass
+ * monogram on a panel — so the layout looks deliberate before (and after) Phase 3 art
+ * lands. Drawn from local (0,0) top-left, sized `size`×`size`.
+ */
+export function makeAvatar(scene: Phaser.Scene, size: number, opts: AvatarOpts): Phaser.GameObjects.Container {
+  const c = scene.add.container(0, 0);
+  if (opts.textureKey && scene.textures.exists(opts.textureKey)) {
+    const img = scene.add.image(0, 0, opts.textureKey).setOrigin(0, 0);
+    const scale = size / Math.max(img.width, img.height);
+    img.setScale(scale);
+    const frame = scene.add.graphics();
+    frame.lineStyle(1, C.border, 1);
+    frame.strokeRoundedRect(0, 0, size, size, 6);
+    c.add([img, frame]);
+  } else {
+    const g = scene.add.graphics();
+    paintBox(g, size, size, C.panelHi, C.border, 6);
+    c.add(g);
+    const letter = scene.add
+      .text(size / 2, size / 2, (opts.initial ?? '?').slice(0, 1).toUpperCase(), {
+        fontFamily: FONT,
+        fontSize: `${Math.round(size * 0.5)}px`,
+        color: T.accent,
+      })
+      .setOrigin(0.5);
+    c.add(letter);
+  }
+  return c;
+}
+
+/**
  * A left-aligned card row with an optional marker, wrapping title, and wrapping
  * subtitle. Height grows to fit the text so long clue descriptions never clip.
  * Draws from local (0,0) top-left — convenient for stacking inside a ScrollArea.
  */
 export function makeListItem(scene: Phaser.Scene, opts: ListItemOpts): ListItem {
   const pad = 12;
+  const avatarSize = 44;
   const sel = opts.selected ?? false;
   const c = scene.add.container(0, 0);
 
   let textX = pad;
   let marker: Phaser.GameObjects.Text | undefined;
-  if (opts.marker && opts.marker !== 'none') {
+  let avatar: Phaser.GameObjects.Container | undefined;
+  if (opts.avatar) {
+    avatar = makeAvatar(scene, avatarSize, opts.avatar);
+    textX = pad + avatarSize + 12;
+  } else if (opts.marker && opts.marker !== 'none') {
     const glyph = opts.marker === 'check' ? (sel ? '✓' : '·') : sel ? '◉' : '○';
     marker = scene.add
       .text(pad, 0, glyph, {
@@ -169,12 +214,14 @@ export function makeListItem(scene: Phaser.Scene, opts: ListItemOpts): ListItem 
     });
     bottom = subtitle.y + subtitle.height;
   }
-  const h = Math.max(46, bottom + pad);
+  const h = Math.max(avatar ? avatarSize + pad * 2 : 46, bottom + pad);
   if (marker) marker.setY(Math.round(h / 2 - 11));
+  if (avatar) avatar.setPosition(pad, Math.round(h / 2 - avatarSize / 2));
 
   const g = scene.add.graphics();
   paintBox(g, opts.width, h, sel ? C.panelHi : C.panel, sel ? C.accent : C.border, 8);
   c.add(g); // behind
+  if (avatar) c.add(avatar);
   c.add(title);
   if (marker) c.add(marker);
   if (subtitle) c.add(subtitle);

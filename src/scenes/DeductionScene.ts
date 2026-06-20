@@ -9,6 +9,7 @@ import type { Deduction } from '../logic/types';
 import { isDeductionSupported } from '../logic/deduction';
 import { BASE_W, MARGIN, CONTENT_W, FONT, T } from './theme';
 import { Button, ScrollArea, makeListItem, heading } from './ui';
+import { applyBackdrop } from './assets';
 import { AccusationScene } from './AccusationScene';
 
 const TOP = 96;
@@ -31,6 +32,7 @@ export class DeductionScene extends Phaser.Scene {
     this.controller = this.registry.get('controller') as GameController;
     this.selected.clear();
     this.counter = 0;
+    applyBackdrop(this, 'deduction');
 
     this.add.text(MARGIN, 36, 'Deduction', {
       fontFamily: FONT,

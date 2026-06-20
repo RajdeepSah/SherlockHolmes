@@ -33,6 +33,17 @@ describe('validateCase', () => {
     expect(validateCase(baseCase())).toEqual([]);
   });
 
+  it('accepts optional Phase 3 art/audio as pure data', () => {
+    const c = baseCase();
+    c.suspects[0]!.portrait = 'assets/portraits/culprit.png';
+    c.art = {
+      scenery: { briefing: 'assets/bg/briefing.png', investigation: 'assets/bg/scene.png' },
+      ambience: { loop: 'assets/audio/night.mp3', sting: 'assets/audio/sting.mp3' },
+      cover: 'assets/cover.png',
+    };
+    expect(validateCase(c)).toEqual([]);
+  });
+
   it('flags a case with no clues', () => {
     const c = baseCase();
     c.clues = [];

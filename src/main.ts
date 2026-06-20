@@ -8,6 +8,7 @@ import Phaser from 'phaser';
 import { GameController } from './scenes/controller';
 import caseSpeckledBand from './content/case-speckled-band';
 import { BASE_W, BASE_H } from './scenes/theme';
+import { BootScene } from './scenes/BootScene';
 import { BriefingScene } from './scenes/BriefingScene';
 import { InvestigationScene } from './scenes/InvestigationScene';
 import { DeductionScene } from './scenes/DeductionScene';
@@ -29,10 +30,12 @@ const game = new Phaser.Game({
 
 game.registry.set('controller', new GameController(caseSpeckledBand));
 
+game.scene.add(BootScene.KEY, BootScene);
 game.scene.add(BriefingScene.KEY, BriefingScene);
 game.scene.add(InvestigationScene.KEY, InvestigationScene);
 game.scene.add(DeductionScene.KEY, DeductionScene);
 game.scene.add(AccusationScene.KEY, AccusationScene);
 game.scene.add(ResolutionScene.KEY, ResolutionScene);
 
-game.scene.start(BriefingScene.KEY);
+// Boot loads any case art/audio first, then hands off to the briefing.
+game.scene.start(BootScene.KEY);

@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 import type { GameController } from './controller';
 import { BASE_W, MARGIN, CONTENT_W, FONT, T } from './theme';
 import { Button } from './ui';
+import { applyBackdrop } from './assets';
 import { InvestigationScene } from './InvestigationScene';
 
 export class BriefingScene extends Phaser.Scene {
@@ -16,6 +17,7 @@ export class BriefingScene extends Phaser.Scene {
   create(): void {
     const controller = this.registry.get('controller') as GameController;
     const c = controller.theCase;
+    applyBackdrop(this, 'briefing');
 
     this.add.text(MARGIN, 40, c.title, {
       fontFamily: FONT,

@@ -9,8 +9,10 @@ const projectRoot = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   root: fileURLToPath(new URL('./public', import.meta.url)),
-  // No static asset dir yet; Phase 3 will point publicDir at the generated art/audio.
-  publicDir: false,
+  // Generated Phase 3 art/audio live in static/ and are copied verbatim to the dist
+  // root (so static/assets/x.png is served at /assets/x.png in dev and in the build).
+  // Case content references them by that runtime path (e.g. "assets/portraits/...").
+  publicDir: fileURLToPath(new URL('./static', import.meta.url)),
   build: {
     outDir: fileURLToPath(new URL('./dist', import.meta.url)),
     emptyOutDir: true,

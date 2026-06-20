@@ -7,6 +7,7 @@ import type { GameController } from './controller';
 import { scoreAccusation } from '../logic/deduction';
 import { BASE_W, MARGIN, CONTENT_W, FONT, T } from './theme';
 import { Button, ScrollArea, heading } from './ui';
+import { applyBackdrop, Ambience } from './assets';
 import { BriefingScene } from './BriefingScene';
 
 const TOP = 150;
@@ -24,6 +25,8 @@ export class ResolutionScene extends Phaser.Scene {
     const { theCase } = controller;
     const state = controller.state;
     const solved = state.solved;
+    applyBackdrop(this, 'resolved');
+    Ambience.sting(this);
 
     this.add.text(MARGIN, 40, solved ? 'Case closed.' : 'The wrong hand.', {
       fontFamily: FONT,

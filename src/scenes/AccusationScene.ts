@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 import type { GameController } from './controller';
 import { BASE_W, MARGIN, CONTENT_W, FONT, T } from './theme';
 import { Button, ScrollArea, makeListItem, heading } from './ui';
+import { applyBackdrop, portraitKey } from './assets';
 import { ResolutionScene } from './ResolutionScene';
 
 const TOP = 96;
@@ -27,6 +28,7 @@ export class AccusationScene extends Phaser.Scene {
     this.controller = this.registry.get('controller') as GameController;
     this.selectedSuspect = null;
     this.cited.clear();
+    applyBackdrop(this, 'accusation');
 
     this.add.text(MARGIN, 36, 'Accusation', {
       fontFamily: FONT,
@@ -97,7 +99,7 @@ export class AccusationScene extends Phaser.Scene {
           width: CONTENT_W,
           title: s.name,
           subtitle: s.blurb,
-          marker: 'toggle',
+          avatar: { textureKey: portraitKey(s.id), initial: s.name },
           selected: this.selectedSuspect === s.id,
           onClick: () => {
             this.selectedSuspect = s.id;

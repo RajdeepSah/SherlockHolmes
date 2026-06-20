@@ -18,16 +18,19 @@ const caseSpeckledBand: Case = {
       id: 'roylott',
       name: 'Dr. Grimesby Roylott',
       blurb: "Helen's stepfather. A violent temper, mounting debts, and a menagerie of exotic animals from his years in India.",
+      portrait: 'assets/portraits/roylott.png',
     },
     {
       id: 'band',
       name: 'The travelling band',
       blurb: 'Wanderers camped on the manor grounds, whom Helen first suspected when she heard the words "speckled band."',
+      portrait: 'assets/portraits/band.png',
     },
     {
       id: 'fiance',
       name: 'Percy Armitage',
       blurb: "Helen's fiancé. Their coming marriage is exactly what threatens Roylott's income.",
+      portrait: 'assets/portraits/fiance.png',
     },
   ],
   clues: [
@@ -100,6 +103,19 @@ const caseSpeckledBand: Case = {
     motive: "To stop his stepdaughters marrying and taking their share of the estate, which would gut his income.",
     method: 'A trained swamp adder — the "speckled band" — sent through the ventilator and down the dummy bell-rope onto the fixed bed, then recalled with a whistle and a saucer of milk.',
     keyClueIds: ['ventilator', 'bellrope', 'bed', 'whistle', 'will'],
+  },
+  // Phase 3 art (paths only — see ARTWORK.md / STYLE.md). Files may not exist yet; the
+  // UI loads what's present and falls back to a procedural look for anything missing.
+  // Audio (art.ambience) is deferred — add it once those files are generated.
+  art: {
+    scenery: {
+      briefing: 'assets/bg/briefing.png',
+      investigation: 'assets/bg/investigation.png',
+      deduction: 'assets/bg/deduction.png',
+      accusation: 'assets/bg/accusation.png',
+      resolved: 'assets/bg/resolved.png',
+    },
+    cover: 'assets/cover.png',
   },
 };
 
