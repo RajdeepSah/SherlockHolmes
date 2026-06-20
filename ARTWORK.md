@@ -10,6 +10,12 @@ here, so generated files are **drop-in: no code changes needed**.
 > brass monograms) and the browser console shows harmless 404s for the missing assets.
 > Both vanish the moment you drop a correctly-named file into the listed folder.
 
+> **Status (verified against the filesystem):** all **10 images are present and correctly
+> named** — checked below. Only the **2 audio files remain (deferred)**. Aspect ratios are
+> all correct; the files are generated at **2× the spec resolution** (portraits 2048², bg
+> 1536×2752, favicon 2048²) — fine to ship, but ~6–9 MB each (~65 MB total). **Recommend
+> downscaling/compressing before the Phase 4 deploy + APK** (favicon especially → 512²).
+
 ---
 
 ## How to use this file
@@ -50,7 +56,7 @@ characters consistent**.
 > shown as the suspect's avatar in the Investigation and Accusation lists. Falls back to a
 > brass monogram of the name's initial if absent.
 
-### [ ] `C1` — Dr. Grimesby Roylott  *(ANCHOR — generate first, no reference)*
+### [x] `C1` — Dr. Grimesby Roylott  *(ANCHOR — generate first, no reference)*
 - **Prompt:** Head-and-shoulders portrait of Dr. Grimesby Roylott, a tall fierce English
   doctor in his fifties, deep-set glaring eyes under heavy brows, thick greying beard,
   skin darkened and lined by years of practice in India, high stiff collar and dark frock
@@ -58,14 +64,14 @@ characters consistent**.
 - **Reference:** none (this is the style anchor for the other two portraits).
 - **Path:** `static/assets/portraits/` · **Filename:** `roylott.png`
 
-### [ ] `C2` — The travelling band (Romani man)
+### [x] `C2` — The travelling band (Romani man)
 - **Prompt:** Head-and-shoulders portrait of a weather-worn travelling Romani man, wary
   watchful eyes, a brightly **spotted neckerchief** at his throat, coarse jacket, dusk
   campfire glow on one cheek; dignified, guarded.
 - **Reference:** `C1` (match its illustration style, brushwork, and lighting).
 - **Path:** `static/assets/portraits/` · **Filename:** `band.png`
 
-### [ ] `C3` — Percy Armitage (the fiancé)
+### [x] `C3` — Percy Armitage (the fiancé)
 - **Prompt:** Head-and-shoulders portrait of Percy Armitage, a young earnest English
   gentleman in his late twenties, neat moustache, clear hopeful eyes shadowed by worry,
   well-kept collar and cravat; gentle, anxious.
@@ -82,33 +88,33 @@ characters consistent**.
 > **Integration:** `Case.art.scenery.<phase>` (already set); drawn full-bleed by
 > `applyBackdrop` with a dark scrim. Falls back to the procedural gradient if absent.
 
-### [ ] `S1` — Briefing  *(ANCHOR SCENE — generate first)*
+### [x] `S1` — Briefing  *(ANCHOR SCENE — generate first)*
 - **Prompt:** The 221B Baker Street sitting room before dawn, embers dying in the grate,
   a cluttered side table, tall curtained window with the faintest grey light; hushed,
   expectant, empty.
 - **Reference:** none (style anchor for the other scenes).
 - **Path:** `static/assets/bg/` · **Filename:** `briefing.png`
 
-### [ ] `S2` — Investigation
+### [x] `S2` — Investigation
 - **Prompt:** A crumbling Surrey manor bedroom at Stoke Moran by candlelight: an iron bed
   clamped to the floor, a useless bell-rope hanging beside it, a small dark ventilator
   high on the wall above; cold, oppressive, full of wrong details.
 - **Reference:** `S1` (match palette and rendering).
 - **Path:** `static/assets/bg/` · **Filename:** `investigation.png`
 
-### [ ] `S3` — Deduction
+### [x] `S3` — Deduction
 - **Prompt:** A writing desk under a single oil lamp, strewn with handwritten notes, a
   magnifying glass and an open notebook; concentration, late-night quiet.
 - **Reference:** `S1`.
 - **Path:** `static/assets/bg/` · **Filename:** `deduction.png`
 
-### [ ] `S4` — Accusation
+### [x] `S4` — Accusation
 - **Prompt:** A dim Victorian drawing room, one empty high-backed chair caught in a shaft
   of warm light, the rest in shadow; the charged hush before a confrontation.
 - **Reference:** `S1`.
 - **Path:** `static/assets/bg/` · **Filename:** `accusation.png`
 
-### [ ] `S5` — Resolution
+### [x] `S5` — Resolution
 - **Prompt:** Pale dawn light pouring through tall windows across the quiet grounds of an
   English country manor; stillness after the storm, release.
 - **Reference:** `S1`.
@@ -118,7 +124,7 @@ characters consistent**.
 
 ## 3. Marketing & app icons
 
-### [ ] `COVER` — title cover / deploy thumbnail
+### [x] `COVER` — title cover / deploy thumbnail
 - **Type** image · **Tool** Gemini Nano Banana · **Format** PNG, **1280×720 (16:9)**, opaque.
 - **Prompt:** A brooding key-art composition for "The Speckled Band": a coiled snake-shadow
   twisting down a tarnished brass bell-pull against soot-black, dramatic single light;
@@ -128,7 +134,7 @@ characters consistent**.
 - **Integration:** `Case.art.cover` (already set). Used as the Phase 4 `deploy_game`
   thumbnail; **not loaded in-game**, so it produces no console 404.
 
-### [ ] `FAVICON` — app/browser icon
+### [x] `FAVICON` — app/browser icon
 - **Type** image · **Tool** Gemini Nano Banana · **Format** PNG, **512×512 (1:1)**, opaque.
 - **Prompt:** A single brass magnifying glass, three-quarter view, catching one warm
   highlight, centred on soot-black; iconic, simple, readable when small. No text.

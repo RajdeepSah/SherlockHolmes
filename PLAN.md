@@ -130,22 +130,22 @@ The phase numbers match the markers already written into the source comments.
 - **Exit criteria (met):** `npm run dev` serves the Speckled Band case end-to-end in a
   browser; `npm test` (38), `npm run typecheck`, and `npm run build` are all green.
 
-### Phase 3 — Look and sound (Higgsfield) ◐ GROUNDWORK DONE, GENERATION BLOCKED
+### Phase 3 — Look and sound ◐ IMAGES IN, AUDIO PENDING
 - ✅ **Asset model is data:** optional `Suspect.portrait` + `Case.art` (per-phase scenery,
   ambience loop/sting, 16:9 cover) — pure paths in content, validated, no engine impact.
 - ✅ **Plumbing in place:** `BootScene` preloads whatever a case references; `applyBackdrop`,
-  the avatar helper, and `Ambience` consume them and **fall back gracefully** — the slice
-  already looks intentional via a procedural gaslit gradient + brass monograms, no art yet.
-- ✅ **House style locked** in `STYLE.md` (one style fragment + palette). `static/` is the
-  publicDir → generated files at `static/assets/...` serve at `/assets/...` in dev/build.
-- ✅ **Manual generation manifest** in `ARTWORK.md`: per-asset prompts, references for
-  character consistency, exact paths/filenames, and a "pilot first" set — for hand
-  generation in the **Gemini Nano Banana** app (audio/video deferred). The case content,
-  the scene loaders, and the favicon link are **pre-wired to those exact paths**, so a
-  generated file is a **zero-code drop-in** (save with the right name → reload).
-- ☐ **Higgsfield generation blocked — billable:** the account has **0 credits (free
-  plan)**, so the in-house Higgsfield route can't generate without a user-authorised
-  purchase. Current plan is manual Gemini generation per `ARTWORK.md` instead.
+  the avatar helper, and `Ambience` consume them and **fall back gracefully** to a procedural
+  gaslit gradient + brass monograms for anything missing.
+- ✅ **House style locked** (`STYLE.md`) + **manual generation manifest** (`ARTWORK.md`):
+  per-asset prompts, references for character consistency, exact paths/filenames. `static/`
+  is the publicDir → files at `static/assets/...` serve at `/assets/...` in dev/build.
+- ✅ **All 10 images generated and dropped in** (manually via Gemini Nano Banana):
+  3 portraits, 5 phase backdrops, 16:9 cover, 1:1 favicon — verified present, correctly
+  named, correct aspect ratios; loaders point at them with no drift. *(Files are ~2× spec
+  resolution, ~65 MB total — downscale/compress before the Phase 4 deploy + APK.)*
+- ☐ **Audio still pending (deferred):** `ambience-loop.mp3` + `ambience-sting.mp3` not yet
+  generated; `art.ambience` is left unwired so no audio is requested. The Higgsfield route
+  remains unused (0 credits) and is not needed for the images.
 - **Exit criteria:** the vertical slice looks intentional and cohesive, not templated.
 
 ### Phase 4 — Ship it ☐
@@ -204,6 +204,6 @@ natural next increments and require no engine changes.
 - [x] Phase 1a: case registry + validator + integrity tests
 - [x] Phase 1b: second case authored as data (zero engine changes)
 - [x] Phase 2: Phaser playable slice in browser
-- [~] Phase 3: asset pipeline + procedural fallback + locked style done; Higgsfield
-  generation blocked on credits (0 credits, free plan)
+- [~] Phase 3: pipeline + locked style + manifest done; all 10 images generated and wired;
+  audio still pending (deferred)
 - [ ] Phase 4: logic.js reconciled, deployed to Higgsfield, APK built

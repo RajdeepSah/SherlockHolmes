@@ -13,9 +13,10 @@ is the roadmap; `SKILLS.md` is the cookbook; this file is the rulebook.
 ## What this is
 
 A TypeScript detective deduction game (Sherlock, public-domain source). **Current state:
-Phase 0–2 complete + Phase 3 groundwork — playable Phaser slice in the browser with an
-asset pipeline and procedural fallback (locked style in `STYLE.md`); real Higgsfield
-generation is blocked on credits. 39 tests green, typecheck clean.** See `PLAN.md §6`.
+Phase 0–2 complete + Phase 3 images in — playable Phaser slice in the browser with all 10
+art assets generated and wired (manifest `ARTWORK.md`, style `STYLE.md`); audio still
+pending (deferred), procedural fallback covers anything missing. 39 tests green, typecheck
+clean.** See `PLAN.md §6`.
 
 ## The golden rules (do not break these)
 

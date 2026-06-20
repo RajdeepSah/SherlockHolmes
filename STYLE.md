@@ -4,11 +4,12 @@ One style, generated once, reused for every asset so portraits, backgrounds, and
 like a single game (PLAN.md §8 risk: "AI art looks inconsistent"). Do **not** improvise
 per asset — paste the **style fragment** below in front of each subject prompt.
 
-> **Status:** spec only. The Higgsfield account currently has **0 credits (free plan)**,
-> so nothing here has been generated yet. The presentation layer already renders a
-> procedural fallback (warm gaslit gradient + brass monograms), so the slice looks
-> intentional today. When credits exist, generate per the shot list and wire the paths
-> into content as shown at the bottom — no engine or scene changes needed.
+> **Status:** the **10 images are generated and in place** (manually via Gemini Nano
+> Banana — see `ARTWORK.md` for per-asset prompts and the live checklist). **Audio is
+> still pending** (`art.ambience`, deferred). The Higgsfield route remains unused (account
+> at 0 credits, free plan); it isn't needed for the images. The presentation layer renders
+> the real art where present and the procedural fallback (warm gaslit gradient + brass
+> monograms) for anything missing.
 
 ---
 
@@ -62,9 +63,11 @@ The scene plumbing keys off these exact paths via `src/scenes/assets.ts`.
 
 ---
 
-## Wiring it into content (after files exist)
+## Wiring it into content
 
-Add this to `caseSpeckledBand` in `src/content/case-speckled-band.ts` — data only:
+> **Already wired:** the portraits, `art.scenery`, and `art.cover` are present in
+> `src/content/case-speckled-band.ts`. The only piece still to add is the `art.ambience`
+> block (one line below) once the audio files are generated. Reference block:
 
 ```ts
 suspects: [
