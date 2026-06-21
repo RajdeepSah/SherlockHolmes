@@ -3,7 +3,7 @@
 // The logic core only ever holds asset *paths* (see Case.art / Suspect.portrait). This
 // module turns those paths into Phaser loads under stable keys, and provides a backdrop
 // helper that falls back to a procedural look when no image is supplied — so the slice
-// looks intentional today and simply gets richer when Higgsfield art is dropped in.
+// looks intentional even when an asset is missing, and richer once the art is present.
 
 import Phaser from 'phaser';
 import type { Case, Phase } from '../logic/types';
@@ -49,6 +49,11 @@ export function applyBackdrop(scene: Phaser.Scene, phase: Phase): void {
       .setDepth(-19);
     return;
   }
+  proceduralBackdrop(scene);
+}
+
+/** The asset-free fallback look: a warm gaslit gradient with a faint brass seam. */
+export function proceduralBackdrop(scene: Phaser.Scene): void {
   const g = scene.add.graphics().setDepth(-20);
   // Warm at the top, settling to near-black at the foot — gaslit-room depth.
   g.fillGradientStyle(0x1d1810, 0x1d1810, 0x100d09, 0x0c0a07, 1);

@@ -8,6 +8,7 @@
 
 import type { Case, GameState, Move, MoveResult, GameEvent } from '../logic/types';
 import { applyMove, createInitialState, getAvailableMoves, isGameOver } from '../logic/engine';
+import { getCase } from '../content/index';
 
 export class GameController {
   readonly theCase: Case;
@@ -67,4 +68,14 @@ export class GameController {
   private emit(): void {
     for (const fn of this.listeners) fn();
   }
+}
+
+/**
+ * Build a controller for a registered case id, or `undefined` if no such case exists.
+ * The case-select menu uses this to start a fresh session for the chosen case. Lookup
+ * stays in the content registry (`getCase`); this is just the UI-side convenience.
+ */
+export function controllerForCase(caseId: string): GameController | undefined {
+  const theCase = getCase(caseId);
+  return theCase ? new GameController(theCase) : undefined;
 }

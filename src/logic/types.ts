@@ -1,7 +1,7 @@
 // Core domain types for the Sherlock deduction engine.
 //
 // This module is PURE: no DOM, no Phaser, no I/O. It is the unit-tested heart of
-// the game and the basis for the deployable `logic.js` module (Higgsfield contract).
+// the game and the single import surface for the presentation layer (see logic/index.ts).
 // Game RULES live here and in engine.ts — never in the presentation layer.
 
 export type Phase = 'briefing' | 'investigation' | 'deduction' | 'accusation' | 'resolved';
@@ -10,7 +10,7 @@ export interface Suspect {
   id: string;
   name: string;
   blurb: string;
-  /** Higgsfield-generated portrait asset path, filled in during Phase 3. */
+  /** Portrait asset path (runtime `assets/...` form), added in Phase 3. */
   portrait?: string;
 }
 
@@ -38,7 +38,7 @@ export interface Solution {
 }
 
 /**
- * Optional presentation assets for a case (Phase 3, Higgsfield-generated). These are
+ * Optional presentation assets for a case (Phase 3). These are
  * just *paths* — pure data. The logic core never loads them; the UI does, and degrades
  * gracefully when a field is absent. Keeping them optional means content without art
  * still validates and still plays.

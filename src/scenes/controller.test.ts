@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { GameController } from './controller';
+import { GameController, controllerForCase } from './controller';
+import { listCases } from '../content/index';
 import caseSpeckledBand from '../content/case-speckled-band';
 
 const firstClueId = caseSpeckledBand.clues[0]!.id;
@@ -58,6 +59,19 @@ describe('GameController (thin UI seam)', () => {
     off();
     c.dispatch({ type: 'advancePhase' });
     expect(hits).toBe(1);
+  });
+
+  it('controllerForCase builds a fresh controller for every listed case', () => {
+    for (const { id } of listCases()) {
+      const c = controllerForCase(id);
+      expect(c).toBeInstanceOf(GameController);
+      expect(c!.theCase.id).toBe(id);
+      expect(c!.state.phase).toBe('briefing');
+    }
+  });
+
+  it('controllerForCase returns undefined for an unknown case id', () => {
+    expect(controllerForCase('no-such-case')).toBeUndefined();
   });
 
   it('reset returns to a clean initial state', () => {

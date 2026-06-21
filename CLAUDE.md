@@ -5,24 +5,24 @@ is the roadmap; `SKILLS.md` is the cookbook; this file is the rulebook.
 
 > **Best run from Claude Code.** This is a multi-file TDD project: the natural loop is
 > edit → `npm run test:watch` → repeat, with the repo on disk. Plain chat can plan and
-> draft, but the build itself wants a terminal. The Higgsfield MCP tools used in Phases
-> 3–4 are approval-/network-gated — see the note at the bottom.
+> draft, but the build itself wants a terminal.
 
 ---
 
 ## What this is
 
 A TypeScript detective deduction game (Sherlock, public-domain source). **Current state:
-Phase 0–2 complete + Phase 3 images in — playable Phaser slice in the browser with all 10
-art assets generated and wired (manifest `ARTWORK.md`, style `STYLE.md`); audio still
-pending (deferred), procedural fallback covers anything missing. 39 tests green, typecheck
-clean.** See `PLAN.md §6`.
+Phase 0–3 complete — playable Phaser slice with a `listCases()`-driven case-select menu
+(both cases playable), all 10 art assets + both ambience tracks generated, wired, and
+compressed to spec (~4.4 MB total; manifest `ARTWORK.md`, style `STYLE.md`); procedural
+fallback covers anything missing. 43 tests green (+1 skipped), typecheck + build clean.
+Phase 4 is the free deploy (GitHub Pages / Netlify) + Capacitor APK.** See `PLAN.md §6`.
 
 ## The golden rules (do not break these)
 
 1. **The logic core is pure.** Nothing in `src/logic/**` may import Phaser, touch the DOM,
    read files, use `Date.now()`/`Math.random()` directly, or do any I/O. Same input →
-   same output, always. This is what makes it testable and reusable as `logic.js`.
+   same output, always. This is what makes it testable in milliseconds and trivially reusable.
 2. **All rules live in the core.** Phase logic, scoring, what's legal when — that belongs
    in `engine.ts`/`deduction.ts`. The UI must never decide game outcomes; it renders state
    and forwards `Move`s.
@@ -53,8 +53,10 @@ npm test               # full suite once (CI gate)
 npm run test:cov       # coverage report (logic core)
 npm run typecheck      # tsc --noEmit (CI gate)
 npm run dev            # Vite dev server (Phase 2+)
-npm run build          # production web bundle (Phase 4)
-npm run build:logic    # emit dist/logic.js for the Higgsfield deploy (Phase 4)
+npm run build          # production web bundle → dist/ (CI gate; Phase 4 deploy)
+npm run optimize:assets # downscale + compress static/ art & audio in place (after re-gen)
+npm run android:sync   # build, then copy dist/ into the Capacitor android/ project
+npm run android:open   # open the android/ project in Android Studio to build the APK
 ```
 
 ## The change loop (every task)
@@ -82,12 +84,15 @@ npm run build:logic    # emit dist/logic.js for the Higgsfield deploy (Phase 4)
 - A new case that only works because the engine was special-cased for it.
 - Importing `phaser` or referencing `window`/`document` anywhere under `src/logic`.
 - Adding a UI/state/animation library to do something the pure core could express.
-- Deploying to Higgsfield before reconciling the `logic.js` contract (see `PLAN.md §6`).
+- Hard-coding an absolute base/asset path (`/assets/...`, `/SherlockHolmes/...`). Keep paths
+  relative so the one `dist/` works on Pages, Netlify, and inside the Capacitor WebView.
+- Committing large, full-resolution art. Run `npm run optimize:assets` first (keeps the
+  bundle a few MB); `src/content/assets.test.ts` fails if a referenced file goes missing.
 
-## Higgsfield / MCP note (Phases 3–4)
+## Shipping note (Phase 4 — no third-party game host)
 
-Asset generation (`generate_image`, `generate_audio`, …) and deployment (`deploy_game`,
-`publish_game`) run through Higgsfield's MCP tools. Those tools require **per-call approval
-and outbound network access**, which a plain chat sandbox may deny (`host_not_allowed`).
-Run those phases in an environment where the tools are approved and the network is open
-(e.g. Claude Code on your machine). Logic and content work (Phases 0–2) need none of that.
+The build is a plain static site: `npm run build` → `dist/`, served as-is. Web hosting is
+free (GitHub Pages via `.github/workflows/deploy.yml`, or drag `dist/` onto Netlify); the
+Android APK is the same `dist/` wrapped by Capacitor (`capacitor.config.ts`). Only the APK's
+final compile needs local tooling (JDK 17 + Android SDK / Android Studio); everything else
+runs from this repo with `npm`. See `PLAN.md §6 Phase 4` and `SKILLS.md §7–8`.

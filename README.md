@@ -6,10 +6,11 @@ accuse the culprit — scored on getting the *who* and the *why* right.
 
 ## Status
 
-Phase 0 complete and Phase 1 well underway: a pure, fully unit-tested game-logic core
-(**31 tests green**, strict typecheck clean) and **two cases** — *The Speckled Band* and
-*The Red-Headed League* — authored as data. The presentation layer (Phaser) and generated
-art/audio are the next phases. See **`PLAN.md`** for the full roadmap.
+Phases 0–3 complete: a pure, fully unit-tested game-logic core (**43 tests green** + 1
+skipped, strict typecheck + build clean), **two cases** authored as data (*The Speckled
+Band* and *The Red-Headed League*), a playable Phaser slice, and generated, compressed art
++ ambient audio (~4.4 MB total). Next is Phase 4 — free web deploy (GitHub Pages / Netlify)
+and an Android APK via Capacitor. See **`PLAN.md`** for the full roadmap.
 
 ## Quickstart
 
@@ -34,9 +35,9 @@ SKILLS.md      step-by-step playbooks (add a case, deploy, build the APK, ...)
 
 ## How it's built
 
-TypeScript + Vitest (TDD) for the core, Phaser 3 for presentation, Higgsfield for art and
-audio, Capacitor to wrap the web build into an Android APK. The guiding rule: **all game
-rules live in the pure core; the UI only renders state and forwards moves; cases are data.**
-Adding a new mystery never means changing the engine.
+TypeScript + Vitest (TDD) for the core, Phaser 3 for presentation, Vite for the static web
+build (hosted free on GitHub Pages or Netlify), and Capacitor to wrap the same build into an
+Android APK. The guiding rule: **all game rules live in the pure core; the UI only renders
+state and forwards moves; cases are data.** Adding a new mystery never means changing the engine.
 
 Source text is public domain (Arthur Conan Doyle, 1892), so there are no licensing issues.

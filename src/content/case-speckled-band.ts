@@ -104,9 +104,8 @@ const caseSpeckledBand: Case = {
     method: 'A trained swamp adder — the "speckled band" — sent through the ventilator and down the dummy bell-rope onto the fixed bed, then recalled with a whistle and a saucer of milk.',
     keyClueIds: ['ventilator', 'bellrope', 'bed', 'whistle', 'will'],
   },
-  // Phase 3 art (paths only — see ARTWORK.md / STYLE.md). Files may not exist yet; the
-  // UI loads what's present and falls back to a procedural look for anything missing.
-  // Audio (art.ambience) is deferred — add it once those files are generated.
+  // Phase 3 art/audio (paths only — see ARTWORK.md / STYLE.md). The UI loads what's
+  // present and falls back to a procedural look (and silence) for anything missing.
   art: {
     scenery: {
       briefing: 'assets/bg/briefing.png',
@@ -114,6 +113,10 @@ const caseSpeckledBand: Case = {
       deduction: 'assets/bg/deduction.png',
       accusation: 'assets/bg/accusation.png',
       resolved: 'assets/bg/resolved.png',
+    },
+    ambience: {
+      loop: 'assets/audio/ambience-loop.mp3',
+      sting: 'assets/audio/ambience-sting.mp3',
     },
     cover: 'assets/cover.png',
   },

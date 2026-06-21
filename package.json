@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "A detective deduction game adapted from the public-domain Adventures of Sherlock Holmes.",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
@@ -12,7 +14,10 @@
     "typecheck": "tsc --noEmit",
     "dev": "vite",
     "build": "vite build",
-    "build:logic": "esbuild src/logic/index.ts --bundle --format=esm --target=es2020 --outfile=dist/logic.js"
+    "preview": "vite preview",
+    "optimize:assets": "node scripts/optimize-assets.mjs",
+    "android:sync": "npm run build && cap sync android",
+    "android:open": "cap open android"
   },
   "dependencies": {
     "phaser": "^3.80.1"
@@ -23,7 +28,7 @@
     "@capacitor/core": "^6.1.0",
     "@types/node": "^20.14.0",
     "@vitest/coverage-v8": "^2.0.5",
-    "esbuild": "^0.23.0",
+    "sharp": "^0.35.2",
     "typescript": "^5.5.4",
     "vite": "^5.3.5",
     "vitest": "^2.0.5"

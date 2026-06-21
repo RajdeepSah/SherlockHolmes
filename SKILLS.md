@@ -77,44 +77,53 @@ Scenes mount into `#game` in `public/index.html`. The scene calls `applyMove()` 
 
 ---
 
-## 6. Generate an art or audio asset (Phase 3, Higgsfield)
+## 6. Generate (and compress) an art or audio asset (Phase 3)
 
-**When:** giving the slice its look and sound. **Requires** an approval-enabled, networked
-environment (the Higgsfield MCP tools); see the note in `CLAUDE.md`.
+**When:** giving the slice its look and sound. No special tooling or network host — art is
+generated in any image tool (we used Gemini Nano Banana), audio in any audio tool.
 
-1. Lock the house style **once**: a single style/era/palette prompt fragment reused for
-   every asset, so portraits and backgrounds feel like one game.
-2. `models_explore(type:'image')` to pick a model and see its aspect ratios/params.
-3. `generate_image` with the style fragment + the specific subject (e.g. "a stern Victorian
-   doctor, oil-portrait lighting"). For audio, `generate_audio` (ambient loop / sting).
-4. Save the resulting asset into `public/assets/...` and reference its **path** from the
-   relevant content field (`Suspect.portrait`, a per-location background map, etc.).
-5. **Done:** asset renders in the running web build; no asset path appears inside
-   `src/logic`.
+1. Lock the house style **once** (`STYLE.md`): a single style/era/palette prompt fragment
+   reused for every asset, so portraits and backgrounds feel like one game.
+2. Generate from the per-asset prompts in `ARTWORK.md` (it lists exact subject, aspect
+   ratio, path, and filename for each). Generate full-resolution — step 4 shrinks it.
+3. Save each file at its listed path under `static/...` (served at `/assets/...`) and, if
+   it is a new kind of asset, reference its **path** from the relevant content field
+   (`Suspect.portrait`, `art.scenery.<phase>`, `art.ambience.{loop,sting}`, `art.cover`).
+4. **Compress for shipping:** `npm run optimize:assets`. This downscales each image to its
+   spec size and palette-compresses the PNGs (sharp) and transcodes the MP3s (ffmpeg),
+   **in place, keeping filenames** — turning ~tens of MB into a few MB.
+5. **Done:** the asset renders/plays in `npm run dev`; `npm test` stays green (the
+   `assets.test.ts` integrity check confirms every referenced file exists); no asset path
+   appears inside `src/logic`.
 
-Also generate the deploy art here: a **16:9 thumbnail** and a **1:1 square favicon**
-(`deploy_game` requires both).
+Also generate the **16:9 cover** (`static/assets/cover.png`) and **1:1 favicon**
+(`static/favicon.png`) — used as the store/social thumbnail and the app/browser icon.
 
 ---
 
-## 7. Bundle `logic.js` and deploy to Higgsfield (Phase 4)
+## 7. Deploy the web build for free (Phase 4)
 
-**When:** shipping a web build. **Requires** the Higgsfield MCP tools (approval + network).
+**When:** shipping the web build. No third-party game host, no `logic.js` — `dist/` is a
+plain static site. Vite's relative `base: './'` (see `vite.config.ts`) makes the same
+`dist/` work under a GitHub Pages sub-path, at a domain root, and in the Capacitor WebView.
 
-1. **Reconcile the contract first.** Run `get_game_creation_instructions`, read
-   `references/build-game.md`, and confirm exactly what `logic.js` must export. Adapt
-   `src/logic/index.ts` to match. *Do not skip this.*
-2. `npm run build` (web bundle) and `npm run build:logic` (→ `dist/logic.js`).
-3. Assemble a zip whose **root** contains `logic.js` and `index.html`, with everything else
-   as assets, per the contract.
-4. `media_upload` the `.zip` → PUT the bytes to the returned URL → `media_confirm` (type
-   `file`) → take the permanent URL.
-5. `deploy_game` with that URL plus the 16:9 thumbnail and 1:1 favicon. Keep the returned
-   `game_id`.
-6. `publish_game` with the `game_id` to list it.
-7. **To update later:** deploy again **with the same `game_id`** — never omit it, or you'll
-   create a second game at a new URL.
-8. **Done:** the play URL runs the slice.
+**Option A — GitHub Pages (automated, recommended)**
+
+1. The workflow `.github/workflows/deploy.yml` builds and publishes `dist/` on every push
+   to `main`. Enable it **once**: repo **Settings → Pages → Build and deployment → Source:
+   GitHub Actions**.
+2. `git push origin main`. Watch the run under the repo's **Actions** tab.
+3. **Done:** the site is live at `https://<user>.github.io/<repo>/` (for this repo,
+   `https://rajdeepsah.github.io/SherlockHolmes/`).
+
+**Option B — Netlify (manual, even simpler)**
+
+1. `npm run build`.
+2. Drag the `dist/` folder onto <https://app.netlify.com/drop>. No account config needed.
+3. **Done:** Netlify returns a public URL serving the slice.
+
+Either way: assets are referenced by **relative** paths, so don't hard-code a leading `/`.
+Sanity-check before shipping with `npm run preview` (serves the built `dist/` locally).
 
 ---
 
@@ -122,14 +131,21 @@ Also generate the deploy art here: a **16:9 thumbnail** and a **1:1 square favic
 
 **When:** you want an installable Android build of the web game.
 
+Already configured: `capacitor.config.ts` (`appId: com.rajdeepsah.speckledband`,
+`webDir: 'dist'`) and the `@capacitor/*` deps. `cap init` is **not** needed again. The
+generated `android/` folder is git-ignored — it's a build artifact regenerated from the
+config + `dist/`.
+
 ```bash
-npx cap init "The Speckled Band" com.example.speckledband --web-dir=dist
-npm run build
-npx cap add android
-npx cap copy
-npx cap open android      # build/run the APK from Android Studio
+npm run build            # produce dist/ (the source of truth)
+npx cap add android      # first time only — scaffolds android/
+npm run android:sync     # rebuild dist/ and copy it into android/ (run after every change)
+npm run android:open     # open android/ in Android Studio → Build > Build APK / Bundle
 ```
-The web build is the source of truth; Capacitor just hosts it in a native shell.
+
+**Requires** a local **JDK 17 + Android SDK** (installed with Android Studio) to compile —
+that's the one step a headless sandbox can't do. From Android Studio you can also run it on
+a device/emulator, and sign a release APK/AAB for distribution.
 
 ---
 

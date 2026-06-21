@@ -1,9 +1,7 @@
-// Public entry for the pure game-logic module.
-//
-// Phase 4: this file is bundled to `dist/logic.js` to satisfy the Higgsfield deploy
-// contract (zip root: logic.js + index.html). The exact exported interface Higgsfield
-// expects will be confirmed against its `references/build-game.md` (via
-// get_game_creation_instructions) before the first deploy, and adapted here.
+// Public entry for the pure game-logic module — the single import surface for the
+// presentation layer and tests. It re-exports the domain types, the engine reducer,
+// scoring, the content validator, and the case registry. Keeping logic behind one
+// barrel keeps the dependency rule (presentation → logic → nothing) easy to enforce.
 export * from './types';
 export { createInitialState, applyMove, isGameOver, getAvailableMoves } from './engine';
 export { scoreAccusation, isDeductionSupported, SCORING } from './deduction';

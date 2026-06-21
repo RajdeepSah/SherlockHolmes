@@ -20,9 +20,7 @@ atmospheric audio, tight writing, and a deduction loop that respects the player'
 intelligence. We get there by nailing **one excellent case end-to-end (the vertical
 slice)** and then expanding case-by-case — not by trying to boil the ocean up front.
 
-**Delivery:** a browser game (HTML/JS) deployed through Higgsfield, the same build
-wrapped into an installable Android APK with Capacitor. This is the path that actually
-uses Higgsfield end-to-end; a Capacitor shell turns the web build into a real Android app.
+**Delivery:** a real Android app.
 
 ---
 
@@ -192,8 +190,8 @@ The phase numbers match the markers already written into the source comments.
 
 A player can, on an Android phone: open the app, read the briefing, explore the scene and
 question suspects, assemble at least one sound deduction, accuse a suspect, and see a scored
-resolution — with real generated art and sound — and the same build is live at a Higgsfield
-URL. Reaching that for the Speckled Band case **is** the milestone; additional cases are the
+resolution — with real generated art and sound — 
+Reaching that for the Speckled Band case **is** the milestone; additional cases are the
 natural next increments and require no engine changes.
 
 ---
@@ -206,4 +204,5 @@ natural next increments and require no engine changes.
 - [x] Phase 2: Phaser playable slice in browser
 - [~] Phase 3: pipeline + locked style + manifest done; all 10 images generated and wired;
   audio still pending (deferred)
-- [ ] Phase 4: logic.js reconciled, deployed to Higgsfield, APK built
+- [ ] Phase 4: logic.js reconciled, deployed
+, APK built

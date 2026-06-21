@@ -10,11 +10,14 @@ here, so generated files are **drop-in: no code changes needed**.
 > brass monograms) and the browser console shows harmless 404s for the missing assets.
 > Both vanish the moment you drop a correctly-named file into the listed folder.
 
-> **Status (verified against the filesystem):** all **10 images are present and correctly
-> named** — checked below. Only the **2 audio files remain (deferred)**. Aspect ratios are
-> all correct; the files are generated at **2× the spec resolution** (portraits 2048², bg
-> 1536×2752, favicon 2048²) — fine to ship, but ~6–9 MB each (~65 MB total). **Recommend
-> downscaling/compressing before the Phase 4 deploy + APK** (favicon especially → 512²).
+> **Status (verified against the filesystem):** all **10 images + both audio files are
+> present, correctly named, and wired** (`art.ambience` is set in the Speckled Band case).
+> The assets were generated at ~2× spec resolution (~65 MB total) and have since been
+> **compressed in place to their spec sizes** via `npm run optimize:assets` (portraits
+> 1024², backdrops 1024×1835, cover 1280×714, favicon 512², MP3s @128 kbps) — **~4.4 MB
+> total**, fit for free hosting and the APK. Re-run that script after regenerating any
+> full-resolution art. A content-integrity test (`src/content/assets.test.ts`) now fails
+> if any referenced asset file goes missing.
 
 ---
 
@@ -24,7 +27,7 @@ For each entry below:
 
 1. **Copy the prompt** — and prepend the *style fragment* from `STYLE.md` (+ its negative
    prompt). If the entry lists a **Reference**, also attach that earlier image in Gemini.
-2. **Generate** in the **Gemini Nano Banana** app (images only; audio/video are deferred).
+2. **Generate** in the **Gemini Nano Banana** app (images; audio is handled separately — §4).
 3. **Download** the result.
 4. **Rename** it to the entry's exact **Filename**.
 5. **Drop** it into the entry's **Path** folder (under `static/…`, served at `/assets/…`).
@@ -131,8 +134,8 @@ characters consistent**.
   leave the upper area uncluttered for a title. No text.
 - **Reference:** `S1` (palette) and/or `C1` (mood).
 - **Path:** `static/assets/` · **Filename:** `cover.png`
-- **Integration:** `Case.art.cover` (already set). Used as the Phase 4 `deploy_game`
-  thumbnail; **not loaded in-game**, so it produces no console 404.
+- **Integration:** `Case.art.cover` (already set). Reserved as the store/social thumbnail
+  for the deploy; **not loaded in-game**, so it produces no console 404.
 
 ### [x] `FAVICON` — app/browser icon
 - **Type** image · **Tool** Gemini Nano Banana · **Format** PNG, **512×512 (1:1)**, opaque.
@@ -140,20 +143,21 @@ characters consistent**.
   highlight, centred on soot-black; iconic, simple, readable when small. No text.
 - **Reference:** none.
 - **Path:** `static/` · **Filename:** `favicon.png`
-- **Integration:** linked from `public/index.html` (`<link rel="icon" href="/favicon.png">`,
-  already added) and reused as the Phase 4 `deploy_game` 1:1 favicon.
+- **Integration:** linked from `public/index.html` (`<link rel="icon" href="favicon.png">`,
+  already added — relative so it resolves under a Pages sub-path) and reused as the
+  Android app icon source.
 
 ---
 
-## 4. Deferred — audio (do not generate yet)
+## 4. Audio — generated and wired
 
-Listed for completeness; generate in a later pass (not via Gemini). When ready, save to the
-paths below and add the `art.ambience` block from `STYLE.md` to the case — the `Ambience`
-helper already consumes these keys.
+Saved to the paths below and wired via the `art.ambience` block in the Speckled Band case
+(the `Ambience` helper consumes these keys: loop on the first tap, sting on the verdict).
+Both are transcoded to 128 kbps by `npm run optimize:assets`.
 
-- [ ] `A1` — **Ambient loop** · audio · ~30s seamless: low night wind, a distant clock,
+- [x] `A1` — **Ambient loop** · audio · ~30s seamless: low night wind, a distant clock,
   faint fire crackle · `static/assets/audio/` · `ambience-loop.mp3`
-- [ ] `A2` — **Tension sting** · audio · ~2s one-shot for the verdict ·
+- [x] `A2` — **Tension sting** · audio · ~2s one-shot for the verdict ·
   `static/assets/audio/` · `ambience-sting.mp3`
 
 ---

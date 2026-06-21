@@ -7,6 +7,7 @@ import { BASE_W, MARGIN, CONTENT_W, FONT, T } from './theme';
 import { Button } from './ui';
 import { applyBackdrop } from './assets';
 import { InvestigationScene } from './InvestigationScene';
+import { MenuScene } from './MenuScene';
 
 export class BriefingScene extends Phaser.Scene {
   static readonly KEY = 'Briefing';
@@ -19,7 +20,14 @@ export class BriefingScene extends Phaser.Scene {
     const c = controller.theCase;
     applyBackdrop(this, 'briefing');
 
-    this.add.text(MARGIN, 40, c.title, {
+    const back = this.add
+      .text(MARGIN, 14, '‹ Cases', { fontFamily: FONT, fontSize: '14px', color: T.muted })
+      .setInteractive({ useHandCursor: true });
+    back.on('pointerover', () => back.setColor(T.accent));
+    back.on('pointerout', () => back.setColor(T.muted));
+    back.on('pointerup', () => this.scene.start(MenuScene.KEY));
+
+    this.add.text(MARGIN, 44, c.title, {
       fontFamily: FONT,
       fontSize: '30px',
       color: T.text,

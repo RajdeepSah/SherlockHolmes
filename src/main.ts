@@ -5,9 +5,8 @@
 // state and forwards Moves. All rules stay in src/logic. See CLAUDE.md.
 
 import Phaser from 'phaser';
-import { GameController } from './scenes/controller';
-import caseSpeckledBand from './content/case-speckled-band';
 import { BASE_W, BASE_H } from './scenes/theme';
+import { MenuScene } from './scenes/MenuScene';
 import { BootScene } from './scenes/BootScene';
 import { BriefingScene } from './scenes/BriefingScene';
 import { InvestigationScene } from './scenes/InvestigationScene';
@@ -25,11 +24,12 @@ const game = new Phaser.Game({
     width: BASE_W,
     height: BASE_H,
   },
-  scene: [], // added below so the controller is in the registry before any scene starts
+  scene: [],
 });
 
-game.registry.set('controller', new GameController(caseSpeckledBand));
-
+// The menu picks a case and puts its controller in the registry; Boot then preloads that
+// case's art and hands off to the briefing. No case is chosen up front.
+game.scene.add(MenuScene.KEY, MenuScene);
 game.scene.add(BootScene.KEY, BootScene);
 game.scene.add(BriefingScene.KEY, BriefingScene);
 game.scene.add(InvestigationScene.KEY, InvestigationScene);
@@ -37,5 +37,4 @@ game.scene.add(DeductionScene.KEY, DeductionScene);
 game.scene.add(AccusationScene.KEY, AccusationScene);
 game.scene.add(ResolutionScene.KEY, ResolutionScene);
 
-// Boot loads any case art/audio first, then hands off to the briefing.
-game.scene.start(BootScene.KEY);
+game.scene.start(MenuScene.KEY);

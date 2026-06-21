@@ -4,12 +4,12 @@ One style, generated once, reused for every asset so portraits, backgrounds, and
 like a single game (PLAN.md §8 risk: "AI art looks inconsistent"). Do **not** improvise
 per asset — paste the **style fragment** below in front of each subject prompt.
 
-> **Status:** the **10 images are generated and in place** (manually via Gemini Nano
-> Banana — see `ARTWORK.md` for per-asset prompts and the live checklist). **Audio is
-> still pending** (`art.ambience`, deferred). The Higgsfield route remains unused (account
-> at 0 credits, free plan); it isn't needed for the images. The presentation layer renders
-> the real art where present and the procedural fallback (warm gaslit gradient + brass
-> monograms) for anything missing.
+> **Status:** all **10 images and both ambience tracks are generated, compressed, and
+> wired** (images via Gemini Nano Banana — see `ARTWORK.md` for per-asset prompts and the
+> live checklist; `art.ambience` is set in the Speckled Band case). Assets are compressed
+> to their spec sizes by `npm run optimize:assets` (~4.4 MB total). The presentation layer
+> renders the real art where present and the procedural fallback (warm gaslit gradient +
+> brass monograms) for anything missing.
 
 ---
 
@@ -55,7 +55,7 @@ The scene plumbing keys off these exact paths via `src/scenes/assets.ts`.
 | `static/assets/audio/ambience-loop.mp3` | seamless loop: low night wind, distant clock, faint fire crackle (~30s) |
 | `static/assets/audio/ambience-sting.mp3` | short tension sting for the verdict (~2s) |
 
-### Deploy art (also used in-game as the cover; required by `deploy_game`, Phase 4)
+### Deploy art (the cover thumbnail + app/browser icon, Phase 4)
 | File | Ratio | Subject |
 |------|-------|---------|
 | `static/assets/cover.png` | 16:9 | the speckled band motif — a coiled shadow and a brass bell-pull, the game title space left clear |
