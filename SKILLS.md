@@ -91,7 +91,9 @@ generated in any image tool (we used Gemini Nano Banana), audio in any audio too
    (`Suspect.portrait`, `art.scenery.<phase>`, `art.ambience.{loop,sting}`, `art.cover`).
 4. **Compress for shipping:** `npm run optimize:assets`. This downscales each image to its
    spec size and palette-compresses the PNGs (sharp) and transcodes the MP3s (ffmpeg),
-   **in place, keeping filenames** — turning ~tens of MB into a few MB.
+   **in place, keeping filenames** — turning ~tens of MB into a few MB. *Prereq:* `sharp`
+   comes from `npm install`; the audio step needs a system **`ffmpeg`** on `PATH` (without
+   it, images still optimize and the script just warns and skips the audio).
 5. **Done:** the asset renders/plays in `npm run dev`; `npm test` stays green (the
    `assets.test.ts` integrity check confirms every referenced file exists); no asset path
    appears inside `src/logic`.

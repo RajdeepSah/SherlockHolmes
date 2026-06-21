@@ -53,7 +53,7 @@ The scene plumbing keys off these exact paths via `src/scenes/assets.ts`.
 | File | Brief |
 |------|-------|
 | `static/assets/audio/ambience-loop.mp3` | seamless loop: low night wind, distant clock, faint fire crackle (~30s) |
-| `static/assets/audio/ambience-sting.mp3` | short tension sting for the verdict (~2s) |
+| `static/assets/audio/ambience-sting.mp3` | short tension sting for the verdict (~5s) |
 
 ### Deploy art (the cover thumbnail + app/browser icon, Phase 4)
 | File | Ratio | Subject |

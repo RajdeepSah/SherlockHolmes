@@ -14,7 +14,7 @@
 
 import sharp from 'sharp';
 import { execFileSync } from 'node:child_process';
-import { existsSync, renameSync, statSync, unlinkSync } from 'node:fs';
+import { existsSync, renameSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 
@@ -110,8 +110,7 @@ function optimizeAudio() {
       tmp,
     ]);
     const a = size(tmp);
-    if (existsSync(tmp)) unlinkSync(abs);
-    renameSync(tmp, abs);
+    renameSync(tmp, abs); // atomically replaces the original (execFileSync threw if ffmpeg failed)
     before += b;
     after += a;
     console.log(`  ${job.file.padEnd(34)} ${kb(b).padStart(9)} -> ${kb(a).padStart(8)}  (@${job.bitrate})`);

@@ -86,7 +86,8 @@ characters consistent**.
 ## 2. Scenes (phase backdrops) — no people; mood and depth only
 
 > Common to all backdrops: **Type** image · **Tool** Gemini Nano Banana ·
-> **Format** PNG, **portrait ~9:16 (e.g. 1024×1792)**, opaque · empty of people · composed
+> **Format** PNG, **portrait ~9:16 (shipped 1024×1835; `optimize:assets` caps to ≤1024×2048,
+> never enlarges)**, opaque · empty of people · composed
 > with the lit subject low/centre so heading text reads clearly over the top third.
 > **Integration:** `Case.art.scenery.<phase>` (already set); drawn full-bleed by
 > `applyBackdrop` with a dark scrim. Falls back to the procedural gradient if absent.
@@ -157,7 +158,7 @@ Both are transcoded to 128 kbps by `npm run optimize:assets`.
 
 - [x] `A1` — **Ambient loop** · audio · ~30s seamless: low night wind, a distant clock,
   faint fire crackle · `static/assets/audio/` · `ambience-loop.mp3`
-- [x] `A2` — **Tension sting** · audio · ~2s one-shot for the verdict ·
+- [x] `A2` — **Tension sting** · audio · ~5s one-shot for the verdict ·
   `static/assets/audio/` · `ambience-sting.mp3`
 
 ---

@@ -64,20 +64,33 @@ export function proceduralBackdrop(scene: Phaser.Scene): void {
 }
 
 /**
- * Ambient audio. Starts the loop on the first user gesture (browsers block autoplay)
- * and only if the audio was actually loaded; the sting is a one-shot. All no-ops when
- * the assets are absent, so this is safe to call before any audio exists.
+ * Ambient audio. Starts the looping atmosphere once and keeps it across scene changes;
+ * the sting is a one-shot. All no-ops when the assets are absent, so this is safe to call
+ * before any audio exists.
  */
 export class Ambience {
   private static loop?: Phaser.Sound.BaseSound;
 
+  /**
+   * Begin the background loop, respecting the browser's autoplay gate. We hang the
+   * start logic off the **game-global** SoundManager (`scene.sound`), not the calling
+   * scene's per-scene InputPlugin — so it survives that scene being stopped immediately
+   * after (BootScene hands straight off to Briefing). If the audio context is already
+   * unlocked (the player tapped a case in the menu), start now; otherwise wait for
+   * Phaser's own `UNLOCKED` event, fired on the next gesture anywhere on the page.
+   */
   static armOnFirstGesture(scene: Phaser.Scene): void {
     if (!scene.cache.audio.exists(AUDIO_LOOP)) return;
-    scene.input.once(Phaser.Input.Events.POINTER_DOWN, () => {
-      if (Ambience.loop) return;
+    const start = (): void => {
+      if (Ambience.loop?.isPlaying) return; // already running (e.g. replaying a case)
       Ambience.loop = scene.sound.add(AUDIO_LOOP, { loop: true, volume: 0.4 });
       Ambience.loop.play();
-    });
+    };
+    if (scene.sound.locked) {
+      scene.sound.once(Phaser.Sound.Events.UNLOCKED, start);
+    } else {
+      start();
+    }
   }
 
   static sting(scene: Phaser.Scene): void {
