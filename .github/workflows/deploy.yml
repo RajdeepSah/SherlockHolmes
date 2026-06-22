@@ -1,7 +1,17 @@
 # Build the Vite web bundle and publish dist/ to GitHub Pages on every push to main.
-# No extra dependencies: this uses GitHub's first-party Pages actions. Enable it once in
-# the repo: Settings → Pages → "Build and deployment" → Source: "GitHub Actions".
-# The site then serves at https://<user>.github.io/<repo>/ — Vite's relative `base: './'`
+# No extra dependencies: this uses GitHub's first-party Pages actions.
+#
+# ONE-TIME SETUP (REQUIRED). Without it the deploy job fails with:
+#   "Failed to create deployment (status: 404) ... Ensure GitHub Pages has been enabled".
+# Enable it once in the repo:
+#   Settings -> Pages -> "Build and deployment" -> Source -> "GitHub Actions"
+#   https://github.com/RajdeepSah/SherlockHolmes/settings/pages
+# That is a one-time click; the default GITHUB_TOKEN handles every deploy afterwards.
+# (Automating that toggle would need a personal-access token with the `pages` +
+#  `administration` scopes plus actions/configure-pages `enablement: true` -- the
+#  default GITHUB_TOKEN cannot enable Pages, so it is not worth it for one click.)
+#
+# The site then serves at https://<user>.github.io/<repo>/ -- Vite's relative `base: './'`
 # (see vite.config.ts) makes the bundle and assets resolve under that sub-path.
 name: Deploy to GitHub Pages
 
@@ -24,14 +34,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -43,4 +53,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
